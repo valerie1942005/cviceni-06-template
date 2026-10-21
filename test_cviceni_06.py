@@ -152,7 +152,7 @@ def test_dummy_distance_brana_je_funkcni() -> None:
 class TestKNN:
     """Jedina studentska metoda: ``KNNClassifier.predict`` (vetsinovy hlas k sousedu)."""
 
-    @STUB
+
     def test_predict_odpovida_sklearn_na_trenovacich_datech(
         self, separable_2class: tuple[np.ndarray, np.ndarray]
     ) -> None:
@@ -163,7 +163,7 @@ class TestKNN:
         ref = SKKNeighborsClassifier(n_neighbors=k).fit(x, y).predict(x)
         assert np.array_equal(np.asarray(mine).ravel(), ref)
 
-    @STUB
+
     def test_predict_odpovida_sklearn_na_novych_bodech(
         self, separable_2class: tuple[np.ndarray, np.ndarray]
     ) -> None:
@@ -179,7 +179,7 @@ class TestKNN:
         ref = SKKNeighborsClassifier(n_neighbors=k).fit(x, y).predict(x_query)
         assert np.array_equal(np.asarray(mine).ravel(), ref)
 
-    @STUB
+
     def test_predict_resi_shodu_hlasu_nizsi_tridou(self) -> None:
         """Pri remize hlasu vraci trida s NEJNIZSIM cislem (pravidlo z docstringu predict).
 
@@ -192,14 +192,14 @@ class TestKNN:
         pred = KNNClassifier(2, DummyDistance()).fit(x_train, y_train).predict(q)
         assert int(np.asarray(pred).ravel()[0]) == 0
 
-    @STUB
+
     def test_predict_bez_fit_vyvola_chybu(self) -> None:
         """predict pred zavolanim fit musi selhat (assert v kostre), ne vratit nesmysl."""
         knn = KNNClassifier(3, DummyDistance())
         with pytest.raises((AssertionError, AttributeError, ValueError)):
             knn.predict(np.zeros((2, 2)))
 
-    @STUB
+
     def test_predict_neshoda_poctu_priznaku_vyvola_chybu(
         self, separable_2class: tuple[np.ndarray, np.ndarray]
     ) -> None:
@@ -214,7 +214,7 @@ class TestKNNPersistence:
     """Model = ulozena trenovaci mnozina:
         save -> load round-trip (jako TestPCAPersistence v cv5)."""
 
-    @STUB
+
     def test_save_load_zachova_predikce(
         self, separable_2class: tuple[np.ndarray, np.ndarray], tmp_path
     ) -> None:
@@ -228,7 +228,7 @@ class TestKNNPersistence:
         obnovena = KNNClassifier(5, DummyDistance()).load(str(cesta))
         assert np.array_equal(np.asarray(obnovena.predict(x)).ravel(), pred)
 
-    @STUB
+
     def test_save_load_zachova_naucena_pole(
         self, separable_2class: tuple[np.ndarray, np.ndarray], tmp_path
     ) -> None:
@@ -248,7 +248,7 @@ class TestKNNPersistence:
 class TestMetrics:
     """Kontingecni tabulka jako koren; vsechny metriky se z ni odvozuji."""
 
-    @STUB
+
     def test_confusion_matrix_odpovida_sklearn(
         self, labels_pair: tuple[np.ndarray, np.ndarray]
     ) -> None:
@@ -258,7 +258,7 @@ class TestMetrics:
         assert cm.shape == (2, 2)
         assert np.array_equal(cm, sk_confusion_matrix(y_true, y_pred, labels=[0, 1]))
 
-    @STUB
+
     def test_accuracy_odpovida_sklearn(
         self, labels_pair: tuple[np.ndarray, np.ndarray]
     ) -> None:
@@ -267,7 +267,7 @@ class TestMetrics:
         cm = confusion_matrix(y_true, y_pred)
         assert accuracy(cm) == pytest.approx(sk_accuracy_score(y_true, y_pred))
 
-    @STUB
+
     def test_precision_odpovida_sklearn(
         self, labels_pair: tuple[np.ndarray, np.ndarray]
     ) -> None:
@@ -278,7 +278,7 @@ class TestMetrics:
             sk_precision_score(y_true, y_pred, zero_division=0)
         )
 
-    @STUB
+
     def test_recall_sensitivity_odpovida_sklearn(
         self, labels_pair: tuple[np.ndarray, np.ndarray]
     ) -> None:
@@ -289,7 +289,7 @@ class TestMetrics:
             sk_recall_score(y_true, y_pred, zero_division=0)
         )
 
-    @STUB
+
     def test_f1_odpovida_sklearn(
         self, labels_pair: tuple[np.ndarray, np.ndarray]
     ) -> None:
@@ -300,7 +300,7 @@ class TestMetrics:
             sk_f1_score(y_true, y_pred, zero_division=0)
         )
 
-    @STUB
+
     def test_specificity_na_rucni_tabulce(self) -> None:
         """Specificitu sklearn primo nema — overujeme na rucne sestavene tabulce.
 
@@ -316,7 +316,7 @@ class TestMetrics:
 class TestValidation:
     """Prevzorkovaci strategie: ``KFold`` (pokryti/neprekryv) a ``Bootstrap`` (OOB)."""
 
-    @STUB
+
     def test_kfold_pokryti_a_neprekryv(self) -> None:
         """Foldy se neprekryvaji, pokryji vsechny indexy a maji velikosti jako sklearn."""
         n, k = 23, 5
@@ -343,7 +343,7 @@ class TestValidation:
         )
         assert sorted(len(te) for te in test_parts) == sk_sizes
 
-    @STUB
+
     def test_bootstrap_opakovani_a_oob_komplement(self) -> None:
         """Trenink ma delku ``n`` s opakovanim, OOB test je komplement unikatnich indexu."""
         n, b = 40, 10
@@ -363,7 +363,7 @@ class TestValidation:
             assert np.array_equal(np.sort(te), oob)
             assert set(np.unique(tr).tolist()).isdisjoint(set(te.tolist()))
 
-    @STUB
+
     def test_cross_validate_vraci_dohodnute_klice(self) -> None:
         """Vysledek ma klice ``*_mean`` / ``*_std``, ``per_split_scores`` a ``n_splits``."""
         rng = np.random.default_rng(0)
@@ -387,7 +387,7 @@ class TestPreprocessing:
     """Standardizace rozdelena na fit/apply (obrana proti uniku dat) a
     podvzorkovani pro demonstraci nevyvazenosti."""
 
-    @STUB
+
     def test_standardize_fit_parametry_odpovidaji_sklearn(self) -> None:
         """``standardize_fit`` vraci ``mean`` a ``std`` shodne se ``StandardScaler``."""
         rng = np.random.default_rng(3)
@@ -397,7 +397,7 @@ class TestPreprocessing:
         assert np.allclose(np.asarray(params["mean"]), sk.mean_)
         assert np.allclose(np.asarray(params["std"]), sk.scale_)
 
-    @STUB
+
     def test_standardize_apply_odpovida_sklearn(self) -> None:
         """``standardize_apply`` na train i test odpovida ``StandardScaler.transform``."""
         rng = np.random.default_rng(4)
@@ -410,7 +410,7 @@ class TestPreprocessing:
         assert np.allclose(np.asarray(standardize_apply(x_test, params)),
                            sk.transform(x_test))
 
-    @STUB
+
     def test_standardize_apply_konstantni_sloupec_bez_nan(self) -> None:
         """Konstantni sloupec (std = 0) se jen vycentruje na nuly, bez inf/nan."""
         x_train = np.array([[1.0, 7.0], [2.0, 7.0], [3.0, 7.0], [4.0, 7.0]])
@@ -420,7 +420,7 @@ class TestPreprocessing:
         # konstantni sloupec se jen vycentruje -> vysledek jsou same nuly
         assert np.allclose(out[:, 1], 0.0)
 
-    @STUB
+
     def test_subsample_imbalance_dodrzi_cilovy_podil(self) -> None:
         """Dodrzi cilovy podil minoritni tridy a vrati obe tridy neprazdne."""
         rng = np.random.default_rng(5)
